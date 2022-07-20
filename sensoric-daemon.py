@@ -18,7 +18,7 @@ DB_HOST = '192.168.109.8'
 DB_PORT = 8428
 DB_NAME = 'sensors'
 HOSTNAME = gethostname()
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 
 
 def get_annotated_influxdb_data(name, tags, fields):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-influx-probe.py [sensor1|sensor2|...sensorn]
+sensoric-probe.py [sensor1|sensor2|...sensorn]
 
 probes the given list of sensors.
 '''
@@ -18,7 +18,7 @@ from influxdb import InfluxDBClient
 SENSORIC_DB_HOST = getenv('SENSORIC_DB_HOST')
 SENSORIC_DB_PORT = getenv('SENSORIC_DB_PORT')
 SENSORIC_DB_NAME = getenv('SENSORIC_DB_NAME')
-SENSORIC_BATCH_SIZE = int(getenv('SENSORIC_BATCH_SIZE' or 1)
+SENSORIC_BATCH_SIZE = int(getenv('SENSORIC_BATCH_SIZE') or 1)
 HOSTNAME = gethostname()
 
 

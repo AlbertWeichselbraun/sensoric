@@ -3,9 +3,10 @@
 Sensor used for determining virtual memory and swap memory usage.
 """
 
+from os import getenv
 from psutil import disk_io_counters
 
-DEVICES = ('sda', 'sdb', 'mmcblk1')
+DEVICES = tuple(getenv('SENSORIC_DISKS').split(' '))
 COUNTERS = ('read_bytes', 'write_bytes', 'read_count', 'write_count')
 
 def setup():

@@ -10,15 +10,16 @@ from sys import argv, exit
 modules = [__import__(module) for module in argv[1:]]
 
 import urllib3
+from os import getenv
 from socket import gethostname
 from time import sleep, time
 from influxdb import InfluxDBClient
 
-DB_HOST = '192.168.109.8'
-DB_PORT = 8428
-DB_NAME = 'sensors'
+SENSORIC_DB_HOST = getenv('SENSORIC_DB_HOST')
+SENSORIC_DB_PORT = getenv('SENSORIC_DB_PORT')
+SENSORIC_DB_NAME = getenv('SENSORIC_DB_NAME')
+SENSORIC_BATCH_SIZE = int(getenv('SENSORIC_BATCH_SIZE' or 1)
 HOSTNAME = gethostname()
-BATCH_SIZE = 1
 
 
 def get_annotated_influxdb_data(name, tags, fields):
@@ -55,10 +56,10 @@ def update():
                                               m.get_sensor_fields())
                 for m in modules]
 
-        sink = InfluxDBClient(host=DB_HOST, port=DB_PORT, database=DB_NAME,
-                              timeout=1, retries=1)
+        sink = InfluxDBClient(host=SENSORIC_DB_HOST, port=SENSORIC_DB_PORT,
+                              database=SENSORIC_DB_NAME, timeout=1, retries=1)
         count = count + 1
-        if count % BATCH_SIZE == 0:
+        if count % SENSORIC_BATCH_SIZE == 0:
             count = 0
             try:
                 print(f'Serializing {len(data)} data points.')

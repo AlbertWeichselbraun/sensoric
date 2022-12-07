@@ -12,6 +12,7 @@ Collects system and sensor data which is then submitted to a time series databas
 - `cpu_sensor`: 
 - `fritzbox_sensor`: network traffic (bytes sent, bytes received)
 - `memory_sensor`: memory consumption
+- `weather_sensor`: provide temperature and humidity for the provided locations
 
 ## Environment variables
 
@@ -27,6 +28,9 @@ Collects system and sensor data which is then submitted to a time series databas
 **Fritzbox sensor**
 - `SENSORIC_FRITZ_HOST`: IP address of the Fritz!Box
 - `SENSORIC_FRITZ_PORT`: port of the Fritz!Box
+
+**Weather sensor**
+- `SENSORIC_WEATHER`: a space sparated list of locations. Spaces within location names need to be replaced with %20 (e.g., Domat Ems > Domat%20Ems)
 
 
 ## Usage:

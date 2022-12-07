@@ -5,6 +5,7 @@ Sensor used for determining virtual memory and swap memory usage.
 
 from psutil import net_io_counters
 
+SKIP = 1
 IGNORE_DEVICES = ('lo', )
 COUNTERS = ('bytes_sent', 'bytes_recv', 'errin', 'errout', 'dropin',
             'dropout')

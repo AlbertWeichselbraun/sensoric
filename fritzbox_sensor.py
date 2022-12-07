@@ -10,7 +10,7 @@ from os import getenv
 from http.client import HTTPConnection
 from xml.etree import ElementTree
 
-
+SKIP = 1
 FRITZ_HOST = getenv('SENSORIC_FRITZ_HOST')
 FRITZ_PORT = int(getenv('SENSORIC_FRITZ_PORT') or 49000)
 if not FRITZ_HOST or not FRITZ_PORT:
@@ -43,6 +43,23 @@ def get_sensor_tags():
 
 def get_sensor_fields():
     c = HTTPConnection(FRITZ_HOST, FRITZ_PORT)
+    c.request('PUT', url='/igdupnp/control/WANPPPConnection1', body=REQ.replace("WANCommonInterfaceConfig", "WANPPPConnection"),
+              headers={'Content-Type': 'text/xml; charset="utf-8"',
+                       'SoapAction': 'urn:schemas-upnp-org:service:WANPPPConnection:1'})
+    response = c.getresponse()
+    if response.status == 200:
+        pass
+    else:
+        print(f'WARNING: Cannot obtain statistics from '
+              f'{FRITZ_HOST}:{FRITZ_PORT} '
+              f'{response.reason} ({response.status}).')
+
+    result = {}
+    data = response.read()
+
+    return result
+
+    c = HTTPConnection(FRITZ_HOST, FRITZ_PORT)
     c.request('PUT', url='/igdupnp/control/WANCommonIFC1', body=REQ,
               headers={'Content-Type': 'text/xml; charset="utf-8"',
                        'SoapAction': 'urn:schemas-upnp-org:service:WANCommonInterfaceConfig:1#GetAddonInfos'})
@@ -58,6 +75,7 @@ def get_sensor_fields():
     data = response.read()
     tree = ElementTree.fromstring(data.decode('utf-8'))
     for element in tree.findall(XPATH):
+        print(element, element.text)
         if element.tag in COUNTERS:
             key = 'fritz_' + COUNTERS[element.tag]
             result[key] = int(element.text)

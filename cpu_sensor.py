@@ -8,6 +8,7 @@ from os.path import basename
 from glob import glob
 
 THERMAL_ZONE = "/sys/devices/virtual/thermal/thermal*"
+SKIP = 1
 
 def setup():
     pass

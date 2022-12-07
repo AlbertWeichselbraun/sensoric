@@ -6,6 +6,9 @@ Sensor used for determining virtual memory and swap memory usage.
 from urllib.request import urlopen
 from json import load
 
+SKIP = 1
+
+
 def setup():
     pass
 

@@ -22,7 +22,7 @@ SENSORIC_BATCH_SIZE = int(getenv('SENSORIC_BATCH_SIZE') or 1)
 HOSTNAME = gethostname()
 
 
-def get_annotated_influxdb_data(name, tags, fields):
+def get_annotated_sensor_data(name, tags, fields):
     '''
     Args:
       Converts a list of fields to an InfluxDB measurement.
@@ -46,15 +46,16 @@ def setup():
 
 def update():
     '''
-    Send an update of all sensor modules to InfluxDB
+    Send an update of all sensor modules to the time series database.
     '''
     data = []
     count = 0
     while True:
-        data += [ get_annotated_influxdb_data(m.get_measurement_name(),
-                                              m.get_sensor_tags(),
-                                              m.get_sensor_fields())
-                for m in modules]
+        data += [get_annotated_sensordata(m.get_measurement_name(),
+                                          m.get_sensor_tags(),
+                                          m.get_sensor_fields())
+                 for m in modules
+                 if count % m.SKIP = 0]
 
         sink = InfluxDBClient(host=SENSORIC_DB_HOST, port=SENSORIC_DB_PORT,
                               database=SENSORIC_DB_NAME, timeout=1, retries=1)

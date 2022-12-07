@@ -8,6 +8,7 @@ from bme280 import bme280
 from bme280 import bme280_i2c
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
+SKIP = 1
 
 def setup():
     '''

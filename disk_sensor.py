@@ -8,6 +8,7 @@ from psutil import disk_io_counters
 
 DEVICES = tuple(getenv('SENSORIC_DISKS').split(' '))
 COUNTERS = ('read_bytes', 'write_bytes', 'read_count', 'write_count')
+SKIP = 1
 
 def setup():
     pass

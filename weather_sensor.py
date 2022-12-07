@@ -43,8 +43,8 @@ def get_sensor_fields():
 
         data = response.read().decode('utf-8')
         temp, humidity = data.split(';')
-        result[f'{location}_temp'] = temp.replace('°C', '')
-        result[f'{location}_humidity'] = humidity.replace('%', '')
+        result[f'{location}_temp'] = float(temp.replace('°C', ''))
+        result[f'{location}_humidity'] = float(humidity.replace('%', ''))
 
     return result
 

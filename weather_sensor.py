@@ -10,7 +10,7 @@ from http.client import HTTPSConnection
 SKIP = 5
 
 WEATHER_SERVICE = 'wttr.in'
-LOCATIONS = getenv('SENSORIC_WEATHER').split() \
+LOCATIONS = getenv('SENSORIC_WEATHER').lower().split() \
         if getenv('SENSORIC_WEATHER') else None
 
 
@@ -43,8 +43,8 @@ def get_sensor_fields():
 
         data = response.read().decode('utf-8')
         temp, humidity = data.split(';')
-        result[f'{location}_temp'] = temp
-        result[f'{location}_humidity'] = humidity
+        result[f'{location}_temp'] = temp.replace('°C', '')
+        result[f'{location}_humidity'] = humidity.replace('%', '')
 
     return result
 

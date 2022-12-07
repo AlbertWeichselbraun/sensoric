@@ -55,7 +55,7 @@ def update():
                                           m.get_sensor_tags(),
                                           m.get_sensor_fields())
                  for m in modules
-                 if count % m.SKIP = 0]
+                 if count % m.SKIP == 0]
 
         sink = InfluxDBClient(host=SENSORIC_DB_HOST, port=SENSORIC_DB_PORT,
                               database=SENSORIC_DB_NAME, timeout=1, retries=1)

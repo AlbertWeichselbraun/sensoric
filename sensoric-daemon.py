@@ -51,7 +51,7 @@ def update():
     data = []
     count = 0
     while True:
-        data += [get_annotated_sensordata(m.get_measurement_name(),
+        data += [get_annotated_sensor_data(m.get_measurement_name(),
                                           m.get_sensor_tags(),
                                           m.get_sensor_fields())
                  for m in modules

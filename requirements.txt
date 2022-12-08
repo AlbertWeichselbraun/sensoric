@@ -1,3 +1,4 @@
 influxdb~=5.3
 bme280~=0.6
 psutil~=5.9.4
+fritzconnection~=1.10

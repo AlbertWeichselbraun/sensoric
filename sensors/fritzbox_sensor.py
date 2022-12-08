@@ -43,7 +43,8 @@ def get_sensor_tags():
 
 def get_sensor_fields():
     c = HTTPConnection(FRITZ_HOST, FRITZ_PORT)
-    c.request('PUT', url='/igdupnp/control/WANPPPConnection1', body=REQ.replace("WANCommonInterfaceConfig", "WANPPPConnection"),
+    c.request('PUT', url='/igdupnp/control/WANPPPConnection1', body=REQ.replace("WANCommonInterfaceConfig",
+                                                                                "WANPPPConnection"),
               headers={'Content-Type': 'text/xml; charset="utf-8"',
                        'SoapAction': 'urn:schemas-upnp-org:service:WANPPPConnection:1'})
     response = c.getresponse()

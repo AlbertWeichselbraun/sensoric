@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-'''
+"""
 Sensor used for determining CPU load and temperature.
-'''
+"""
 
 import os
 from os.path import basename
@@ -9,6 +9,7 @@ from glob import glob
 
 THERMAL_ZONE = "/sys/devices/virtual/thermal/thermal*"
 SKIP = 1
+
 
 def setup():
     pass
@@ -27,9 +28,10 @@ def _read_temperature(path):
 
 
 def get_sensor_fields():
-    ''' :returns:
-           a tuple of temperature, humidity
-    '''
+    """
+    Returns:
+        a tuple of temperature, humidity
+    """
     fields = {basename(path): _read_temperature(path) for path in glob(THERMAL_ZONE)}
     fields['load'] = os.getloadavg()[0]  # average load over the last minute.
     return fields

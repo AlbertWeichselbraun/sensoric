@@ -20,13 +20,15 @@ def get_sensor_tags():
 
 
 def get_sensor_fields():
-    ''' :returns:
-           a tuple of temperature, humidity
-    '''
+    """
+    Returns:
+        a tuple of temperature, humidity
+    """
     humidity, temperature = dht.read_retry(SENSOR_ID, PIN)
     return {'humidity': humidity,
             'temperature': temperature}
 
+
 if __name__ == '__main__':
     setup()
-    print("Measuring:", get_temperatures())
+    print("Measuring:", get_sensor_fields())

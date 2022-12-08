@@ -3,32 +3,34 @@
 Sensor used for determining virtual memory and swap memory usage.
 """
 
-from os import getenv
-from psutil import disk_io_counters
+from psutil import net_io_counters
 
-DEVICES = tuple(getenv('SENSORIC_DISKS').split(' '))
-COUNTERS = ('read_bytes', 'write_bytes', 'read_count', 'write_count')
 SKIP = 1
+IGNORE_DEVICES = ('lo', )
+COUNTERS = ('bytes_sent', 'bytes_recv', 'errin', 'errout', 'dropin',
+            'dropout')
+
 
 def setup():
     pass
 
 
 def get_measurement_name():
-    return 'disk'
+    return 'net'
 
 
 def get_sensor_tags():
-    return {'sensor': 'disk'}
+    return {'sensor': 'net'}
+
 
 def get_sensor_fields():
     result = {}
-    for disk, stats in disk_io_counters(perdisk=True).items():
-        if disk not in DEVICES:
+    for netdev, stats in net_io_counters(pernic=True).items():
+        if netdev in IGNORE_DEVICES:
             continue
 
         for counter in COUNTERS:
-            key = f'{disk}_{counter}'
+            key = f'{netdev}_{counter}'
             result[key] = getattr(stats, counter)
 
     return result

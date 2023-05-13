@@ -4,16 +4,8 @@ from abc import abstractmethod
 class Sensor:
     skip: int = 1
     required_attributes: tuple = tuple()
-
-    @abstractmethod
-    @property
-    def measurement_name(self) -> str:
-        pass
-
-    @abstractmethod
-    @property
-    def sensor_tags(self):
-        pass
+    measurement_name: str
+    sensor_tags: str
 
     @abstractmethod
     def get_sensor_fields(self):

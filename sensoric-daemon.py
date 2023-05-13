@@ -5,33 +5,48 @@ sensoric-probe.py [sensor_1|sensor_2|...sensor_n]
 
 probes the given list of sensors.
 """
-from os.path import dirname, join as os_join
-from sys import argv, path
+from sys import argv
+from pathlib import Path
 from os import getenv
 from socket import gethostname
 from time import sleep, time
+from typing import Dict, List
 
-# import all configured sensors
-path.append(os_join(dirname(__file__), 'sensors'))
-modules = [__import__(module) for module in argv[1:]]
-path.append(os_join(dirname(__file__), 'sinks'))
+from .util.config import SensoricConfiguration
+
+"""
+TODO:
+- add __required_config_flags__ annotation to each modul
+"""
 
 SENSORIC_DB_HOST = getenv('SENSORIC_DB_HOST')
 SENSORIC_DB_PORT = getenv('SENSORIC_DB_PORT')
 SENSORIC_DB_NAME = getenv('SENSORIC_DB_NAME')
-SENSORIC_BATCH_SIZE = int(getenv('SENSORIC_BATCH_SIZE') or 1)
 HOSTNAME = gethostname()
 
 
 class Sensoric:
 
-    def __init__(self, sink):
+    def __init__(self, configuration_file: Path):
         """
         Setup all sensor modules.
         """
-        self.sink = sink
-        for module in modules:
-            module.setup()
+        config = SensoricConfiguration(configuration_file=Path(argv[1]))
+        self.sensors = self._init_modules(config.get_sensors())
+        self.sinks = self._init_modules(config.get_sink())
+        self.batch_size = config.batch_size()
+
+    @staticmethod
+    def _init_modules(module_config: Dict[str, Dict]) -> List:
+        modules = []
+        for sensor, sensor_config in module_config.items():
+            sensor = __import__('.' + sensor)
+            if sensor_config:
+                sensor.setup(**sensor_config)
+            else:
+                sensor.setup()
+            modules.append(sensor)
+        return modules
 
     @staticmethod
     def get_annotated_sensor_data(name, tags, fields):
@@ -57,15 +72,16 @@ class Sensoric:
             data += [Sensoric.get_annotated_sensor_data(m.get_measurement_name(),
                                                         m.get_sensor_tags(),
                                                         m.get_sensor_fields())
-                     for m in modules
+                     for m in self.sensors
                      if count % m.SKIP == 0]
 
             count = count + 1
-            if count % SENSORIC_BATCH_SIZE == 0:
+            if count % self.batch_size == 0:
                 count = 0
                 try:
                     print(f'Serializing {len(data)} data points.')
-                    self.sink.write_points(data)
+                    for sink in self.sinks:
+                        sink.write_points(data)
                     data = []
                 except Exception as e:
                     print(e)
@@ -76,18 +92,10 @@ class Sensoric:
 if __name__ == '__main__':
     import os
 
-    if 'http_proxy' in os.environ:
+    sensoric = Sensoric(Path(argv[1]))
+    if sensoric.ignore_proxy and 'http_proxy' in os.environ:
         del os.environ['http_proxy']
-    if 'https_proxy' in os.environ:
+    if sensoric.ignore_proxy and 'https_proxy' in os.environ:
         del os.environ['https_proxy']
 
-    if SENSORIC_DB_HOST and SENSORIC_DB_PORT and SENSORIC_DB_NAME:
-        from influxdb import InfluxDBClient
-        sink = InfluxDBClient(host=SENSORIC_DB_HOST, port=SENSORIC_DB_PORT,
-                              database=SENSORIC_DB_NAME, timeout=1, retries=1)
-    else:
-        from sinks.stdout import StdoutSink
-        sink = StdoutSink()
-
-    sensoric = Sensoric(sink)
     sensoric.watch()

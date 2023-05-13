@@ -19,17 +19,16 @@ LOCATIONS = getenv('SENSORIC_WEATHER').lower().split() \
 class Weather(Sensor):
     measurement_name = 'weather'
     sensor_tags = {'sensor': 'weather'}
+    required_attributes = ('locations', )
 
-    def __init__(self, location: str):
-        self.location = location
+    def __init__(self, locations: str|list[str]):
+        self.locations = [locations, ] if isinstance(locations, str) else locations
 
     def get_sensor_fields(self):
         result = {}
-        if not self.location:
-            return result
 
         c = HTTPSConnection(WEATHER_SERVICE)
-        for location in LOCATIONS:
+        for location in self.locations:
             c.request('GET', url=f'/{location}?format=%t;%h')
             response = c.getresponse()
             if response.status == 200:
@@ -48,5 +47,5 @@ class Weather(Sensor):
 
 SENSOR = Weather
 if __name__ == '__main__':
-    s = SENSOR(location='chur')
+    s = SENSOR(locations='chur')
     print('Measure:', s.get_sensor_fields())

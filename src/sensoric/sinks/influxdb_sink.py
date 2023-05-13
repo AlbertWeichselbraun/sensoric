@@ -1,6 +1,7 @@
 """
 A sink that logs to an InfluxDB.
 """
+from __future__ import absolute_import
 from influxdb import InfluxDBClient
 from sensoric.sinks import Sink
 

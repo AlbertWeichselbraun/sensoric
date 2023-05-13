@@ -7,36 +7,30 @@ import os
 from os.path import basename
 from glob import glob
 
+from sensors import Sensor
+
 THERMAL_ZONE = "/sys/devices/virtual/thermal/thermal*"
-SKIP = 1
 
 
-def setup():
-    pass
+class Cpu(Sensor):
+    measurement_name = 'cpu'
+    sensor_tags = {'sensor': 'cpu'}
+
+    @staticmethod
+    def _read_temperature(path):
+        return int(open(path + "/temp").read()) / 1000
+
+    def get_sensor_fields(self):
+        """
+        Returns:
+            a tuple of temperature, humidity
+        """
+        fields = {basename(path): self._read_temperature(path) for path in glob(THERMAL_ZONE)}
+        fields['load'] = os.getloadavg()[0]  # average load over the last minute.
+        return fields
 
 
-def get_measurement_name():
-    return 'cpu'
-
-
-def get_sensor_tags():
-    return {'sensor': 'cpu'}
-
-
-def _read_temperature(path):
-    return int(open(path + "/temp").read()) / 1000
-
-
-def get_sensor_fields():
-    """
-    Returns:
-        a tuple of temperature, humidity
-    """
-    fields = {basename(path): _read_temperature(path) for path in glob(THERMAL_ZONE)}
-    fields['load'] = os.getloadavg()[0]  # average load over the last minute.
-    return fields
-
-
+SENSOR = Cpu
 if __name__ == '__main__':
-    setup()
-    print("Measuring:", get_sensor_fields())
+    s = SENSOR()
+    print("Measuring:", s.get_sensor_fields())

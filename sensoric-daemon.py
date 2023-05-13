@@ -19,9 +19,6 @@ TODO:
 - add __required_config_flags__ annotation to each modul
 """
 
-SENSORIC_DB_HOST = getenv('SENSORIC_DB_HOST')
-SENSORIC_DB_PORT = getenv('SENSORIC_DB_PORT')
-SENSORIC_DB_NAME = getenv('SENSORIC_DB_NAME')
 HOSTNAME = gethostname()
 
 
@@ -73,7 +70,7 @@ class Sensoric:
                                                         m.get_sensor_tags(),
                                                         m.get_sensor_fields())
                      for m in self.sensors
-                     if count % m.SKIP == 0]
+                     if count % m.skip == 0]
 
             count = count + 1
             if count % self.batch_size == 0:

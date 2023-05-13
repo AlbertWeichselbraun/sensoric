@@ -2,7 +2,6 @@
 A simple sink that logs to stdout used for debugging.
 """
 from sinks import Sink
-from time import ctime
 
 
 class NotificationSink(Sink):

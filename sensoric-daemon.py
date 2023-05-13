@@ -33,10 +33,10 @@ class Sensoric:
         for sensor, sensor_config in module_config.items():
             sensor = import_module(base + '.' + sensor)
             if sensor_config:
-                sensor.SENSOR(**sensor_config)
+                s = sensor.SENSOR(**sensor_config)
             else:
-                sensor.SENSOR()
-            modules.append(sensor)
+                s = sensor.SENSOR()
+            modules.append(s)
         return modules
 
     @staticmethod
@@ -60,8 +60,8 @@ class Sensoric:
         data = []
         count = 0
         while True:
-            data += [Sensoric.get_annotated_sensor_data(m.get_measurement_name(),
-                                                        m.get_sensor_tags(),
+            data += [Sensoric.get_annotated_sensor_data(m.measurement_name,
+                                                        m.sensor_tags,
                                                         m.get_sensor_fields())
                      for m in self.sensors
                      if count % m.skip == 0]

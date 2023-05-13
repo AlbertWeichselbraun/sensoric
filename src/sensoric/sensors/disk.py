@@ -15,6 +15,7 @@ class Disk(Sensor):
     sensor_tags = {'sensor': 'disk'}
 
     def __init__(self, disks: list[str]):
+        super().__init__()
         self.disks = disks
 
     def get_sensor_fields(self):

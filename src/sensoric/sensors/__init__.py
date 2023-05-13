@@ -2,10 +2,12 @@ from abc import abstractmethod
 
 
 class Sensor:
-    skip: int = 1
     required_attributes: tuple = tuple()
     measurement_name: str
     sensor_tags: str
+
+    def __init__(self):
+        self.skip = 1
 
     @abstractmethod
     def get_sensor_fields(self):

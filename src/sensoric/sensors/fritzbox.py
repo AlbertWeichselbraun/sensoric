@@ -23,6 +23,7 @@ class FritzBox(Sensor):
     required_attributes = ('address', 'port')
 
     def __init__(self, address: str, port: int):
+        super().__init__()
         self.fs = FritzStatus(address=address, port=port, use_tls=False, use_cache=True, verify_cache=True)
 
     def get_sensor_fields(self):

@@ -1,5 +1,6 @@
 from sensoric.sinks import Sink
 from copy import deepcopy
+from time import time
 
 
 DATA = [{'measurement': 'cpu', 'tags': {'sensor': 'cpu', 'host': 'hc'},
@@ -49,4 +50,15 @@ def test_filter_flip():
     assert not sink.filter_data(DATA)
 
     assert not sink.filter_data(DATA2)
+    assert sink.filter_data(DATA)
+
+def test_filter_data_delay():
+    """
+    Ensure that the filter only admits data after data delay has been met.
+    """
+    sink = Sink(filter_expr="('{measurement}' == 'cpu') & ({fields[thermal_zone1]} > 50)", data_delay=60)
+    assert sink.filter_data(DATA)
+    assert not sink.filter_data(DATA)
+    assert not sink.filter_data(DATA)
+    sink.last_warn = time() - 60
     assert sink.filter_data(DATA)

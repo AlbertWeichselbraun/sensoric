@@ -33,5 +33,8 @@ class SensoricConfiguration:
     def get_sink(self):
         return self._get_config('sinks')
 
-    def batch_size(self):
-        return self.config['global'].get('batch_size', 1)
+    def batch_size(self) -> int:
+        return int(self.config['global'].get('batch_size', '1'))
+
+    def ignore_proxy(self) -> bool:
+        return True if self.config['global'].get('ignore_proxy', 'None') else False

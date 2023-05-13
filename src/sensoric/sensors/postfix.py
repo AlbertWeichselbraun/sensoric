@@ -17,7 +17,7 @@ class Postfix(Sensor):
         Returns:
           A key, value mapping of sensor data.
         """
-        output = subprocess.check_output(['postqueue', '-p']).decdoe("utf-8")
+        output = subprocess.check_output(['postqueue', '-p']).decode("utf-8")
         # one line per item  header
         queue_size = len(output.splitlines()) - 1
         return dict(postfix_queue=queue_size)

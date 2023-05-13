@@ -29,10 +29,9 @@ class Sink:
 
     def _apply_filter(self, d):
         try:
-            print(self.filter.format(**d))
-            return ne.evaluate(self.filter.format(**d))
+            s = self.filter.format(**d)
+            return ne.evaluate(s).item()
         except KeyError as e:
-            print("~~~", e, d)
             return False
 
     def filter_data(self, data):

@@ -1,4 +1,5 @@
 from sensoric.sinks import Sink
+from copy import deepcopy
 
 
 DATA = [{'measurement': 'cpu', 'tags': {'sensor': 'cpu', 'host': 'hc'},
@@ -24,7 +25,7 @@ DATA = [{'measurement': 'cpu', 'tags': {'sensor': 'cpu', 'host': 'hc'},
                     'fritz_upstream': 14423, 'fritz_downstream': 261869, 'fritz_upstream_max': 5849625,
                     'fritz_downstream_max': 17753875}, 'time': 1683993702525872640}]
 
-DATA2 = DATA.copy()
+DATA2 = deepcopy(DATA)
 DATA2[0]['fields']['thermal_zone1'] = 20
 
 
@@ -34,15 +35,16 @@ def test_no_filter():
 
 
 def test_filter():
-    sink = Sink(filter_expr="{d[measurement]} == cpu and {d[fields['thermal_zone1']]} > 50")
+    print("...", DATA[0]['fields']['thermal_zone1'])
+    sink = Sink(filter_expr="('{measurement}' == 'cpu') & ({fields[thermal_zone1]} > 50)")
     assert sink.filter_data(DATA)
 
 
-def stest_filter_flip():
+def test_filter_flip():
     """
     Ensure that the filter needs to flip before another data pair is admitted.
     """
-    sink = Sink(filter_expr="{measurement} == cpu and {fields['thermal_zone1']} > 50", requires_flipped=True)
+    sink = Sink(filter_expr="('{measurement}' == 'cpu') & ({fields[thermal_zone1]} > 50)", requires_flipped=True)
     assert sink.filter_data(DATA)
     assert not sink.filter_data(DATA)
 

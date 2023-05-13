@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
-from __future__ import absolute_import
 import sys
 import logging
 import subprocess
-
-from bme280 import bme280
-from bme280 import bme280_i2c
+import bme280
 
 from sensoric.sensors import Sensor
 
@@ -31,20 +28,20 @@ class Bme280(Sensor):
 
         logging.info("Detected BME280 sensor at address %s.", hex(i2c_address))
 
-        bme280_i2c.set_default_i2c_address(i2c_address)
-        bme280_i2c.set_default_bus(1)
+        bme280.bme280_i2c.set_default_i2c_address(i2c_address)
+        bme280.bme280_i2c.set_default_bus(1)
         bme280.setup()
 
     @property
     def sensor_tags(self):
-        return {'sensor': 'bme280x' + hex(bme280_i2c.default_i2c_address)[2:]}
+        return {'sensor': 'bme280x' + hex(bme280.bme280_i2c.default_i2c_address)[2:]}
 
     def get_sensor_fields(self):
         """
         Returns:
           A key, value mapping of sensor data.
         """
-        return dict(bme280.read_all()._asdict())
+        return dict(bme280.bme280.read_all()._asdict())
 
 
 SENSOR = Bme280

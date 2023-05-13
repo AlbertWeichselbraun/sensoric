@@ -3,6 +3,7 @@
 """
 Performs metrics with a list of Sensors and forwards the results to the specified Sinks.
 """
+from importlib import import_module
 from pathlib import Path
 from socket import gethostname
 from sys import argv
@@ -30,7 +31,7 @@ class Sensoric:
     def _init_modules(base: str, module_config: Dict[str, Dict]) -> List:
         modules = []
         for sensor, sensor_config in module_config.items():
-            sensor = __import__(base + '.' + sensor)
+            sensor = import_module(base + '.' + sensor)
             if sensor_config:
                 sensor.SENSOR(**sensor_config)
             else:

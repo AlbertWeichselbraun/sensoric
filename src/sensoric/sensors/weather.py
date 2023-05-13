@@ -8,12 +8,7 @@ from http.client import HTTPSConnection
 
 from sensoric.sensors import Sensor
 
-# only provide one measurement every 5 minutes
-SKIP = 5
-
 WEATHER_SERVICE = 'wttr.in'
-LOCATIONS = getenv('SENSORIC_WEATHER').lower().split() \
-        if getenv('SENSORIC_WEATHER') else None
 
 
 class Weather(Sensor):

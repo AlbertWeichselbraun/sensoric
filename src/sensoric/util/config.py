@@ -18,10 +18,10 @@ class SensoricConfiguration:
         """
         config_group = defaultdict(dict)
         for item in self.config[configuration_group]:
-            if ':' not in item:
+            if '.' not in item:
                 config_group[item] = {}
                 continue
-            config_item, config_item_key = item.split(':')
+            config_item, config_item_key = item.split('.')
             config_value = self.config[configuration_group][item]
             config_group[config_item][config_item_key] = [
                 c.strip() for c in config_value.split(',')] if ',' in config_value else config_value

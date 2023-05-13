@@ -5,7 +5,7 @@ from time import time
 
 class Sink:
 
-    def __init__(self, filter_expr: str = None, requires_flipped: bool = False, data_delay = 0):
+    def __init__(self, filter_expr: str = None, requires_flipped: str = 'False', data_delay: str = '0'):
         """
         Args:
             filter: filter expression
@@ -16,8 +16,8 @@ class Sink:
         self.last_warn = 0
 
         self.filter = filter_expr
-        self.requires_flipped = requires_flipped
-        self.data_delay = data_delay
+        self.requires_flipped = bool(requires_flipped)
+        self.data_delay = int(data_delay)
 
 
     @abstractmethod

@@ -2,9 +2,16 @@
 batch_size = 1
 
 [sinks]
-influxdb.host = 192.168.109.8
+influxdb.host = 127.0.0.1
 influxdb.port = 8428
 influxdb.database = sensors
+matrix.homeserver = matrix.org
+matrix.user_id = youruser
+matrix.access_token = yourtoken
+matrix.room_id = yourroomid
+matrix.msg_template = Warning! Postfix queue has reached size {fields[postfix_queue]}
+matrix.filter_expr = ('{measurement}' == 'queue') & ({fields[postfix_queue]} > 0)
+matrix.requires_flipped = True
 
 [sensors]
 bme280 = active
@@ -13,6 +20,6 @@ memory = active
 network = active
 postfix = active
 disk.disks = sda, sdb, mmcblk1
-fritzbox.address = 192.168.109.1
+fritzbox.address = 127.0.0.1
 fritzbox.port = 49000
 # weather.locations = Chur

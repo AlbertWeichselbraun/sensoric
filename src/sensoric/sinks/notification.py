@@ -10,4 +10,5 @@ class NotificationSink(Sink):
         self.sink = sink
 
     def write_points(self, data):
-        self.sink.write_points(data)
+        if not self.filter_data(data):
+            self.sink.write_points(data)

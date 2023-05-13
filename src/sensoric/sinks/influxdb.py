@@ -11,4 +11,5 @@ class NotificationSink(Sink):
         self.influxdb = influxdb.InfluxDBClient(host=host, port=port, database=database, timeout=1, retries=1)
 
     def write_points(self, data):
-        self.influxdb.write_points(data)
+        if not self.filter_data(data):
+            self.influxdb.write_points(data)

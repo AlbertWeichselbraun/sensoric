@@ -7,4 +7,5 @@ from time import ctime
 
 class StdoutSink(Sink):
     def write_points(self, data):
-        print(ctime(), data)
+        if not self.filter_data(data):
+            print(ctime(), data)

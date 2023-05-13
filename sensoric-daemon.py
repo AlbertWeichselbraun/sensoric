@@ -9,7 +9,7 @@ from sys import argv
 from time import sleep, time
 from typing import Dict, List
 
-from sensoric.util import SensoricConfiguration
+from sensoric.util.config import SensoricConfiguration
 
 HOSTNAME = gethostname()
 

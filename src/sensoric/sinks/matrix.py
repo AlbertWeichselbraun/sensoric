@@ -7,9 +7,10 @@ from sensoric.sinks import Sink
 from nio import AsyncClient
 
 
-class NotificationSink(Sink):
+class MatrixSink(Sink):
 
     def __init__(self, homeserver: str, user_id: str, access_token: str, room_id: str, msg_template: str):
+        super().__init__()
         self.homeserver = homeserver
         self.user_id = user_id
         self.access_token = access_token
@@ -37,3 +38,6 @@ class NotificationSink(Sink):
         asyncio.get_event_loop().run_until_complete(
             self._send_matrix_message(message=self.msg_template.format(data))
         )
+
+
+SENSOR = MatrixSink

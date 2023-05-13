@@ -20,4 +20,3 @@ class Sink:
 
         expr = self.filter.format(**data)
         return ne.evaluate(expr)
-

@@ -21,16 +21,16 @@ class Sensoric:
         Setup all sensor modules.
         """
         config = SensoricConfiguration(configuration_file=configuration_file)
-        self.sensors = self._init_modules(config.get_sensors())
-        self.sinks = self._init_modules(config.get_sink())
+        self.sensors = self._init_modules(base='sensoric.sensors', module_config=config.get_sensors())
+        self.sinks = self._init_modules(base='sensoric.sinks', module_config=config.get_sink())
         self.batch_size = config.batch_size()
         self.ignore_proxy = config.ignore_proxy()
 
     @staticmethod
-    def _init_modules(module_config: Dict[str, Dict]) -> List:
+    def _init_modules(base: str, module_config: Dict[str, Dict]) -> List:
         modules = []
         for sensor, sensor_config in module_config.items():
-            sensor = __import__('.' + sensor)
+            sensor = __import__(base + '.' + sensor)
             if sensor_config:
                 sensor.SENSOR(**sensor_config)
             else:

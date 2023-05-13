@@ -5,7 +5,7 @@ Sensor used for determining virtual memory and swap memory usage.
 
 from psutil import virtual_memory, swap_memory
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 VIRTUAL_MEM_FIELDS = ('total', 'available', 'buffers', 'cached')
 SWAP_MEM_FIELDS = ('total', 'used')

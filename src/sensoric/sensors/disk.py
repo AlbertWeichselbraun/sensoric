@@ -4,7 +4,7 @@ Sensor used for determining virtual memory and swap memory usage.
 """
 
 from psutil import disk_io_counters
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 COUNTERS = ('read_bytes', 'write_bytes', 'read_count', 'write_count')
 

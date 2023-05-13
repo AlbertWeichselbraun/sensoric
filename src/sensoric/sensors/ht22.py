@@ -2,7 +2,7 @@
 
 import Adafruit_DHT as dht
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 SENSOR_ID = dht.DHT22   # DHT22
 PIN = 4                 # GPIO 4

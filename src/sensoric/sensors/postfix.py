@@ -3,7 +3,7 @@
 import logging
 import subprocess
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 

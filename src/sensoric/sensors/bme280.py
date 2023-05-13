@@ -7,7 +7,7 @@ import subprocess
 from bme280 import bme280
 from bme280 import bme280_i2c
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', level=logging.INFO)
 

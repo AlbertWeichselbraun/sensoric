@@ -6,7 +6,7 @@ Weather sensor based on wttr.in
 from os import getenv
 from http.client import HTTPSConnection
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 # only provide one measurement every 5 minutes
 SKIP = 5

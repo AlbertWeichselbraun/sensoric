@@ -7,7 +7,7 @@ https://fritzconnection.readthedocs.io
 
 from fritzconnection.lib.fritzstatus import FritzStatus
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 
 COUNTERS = {'bytes_sent': 'bytes_sent',

@@ -7,7 +7,7 @@ import os
 from os.path import basename
 from glob import glob
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 THERMAL_ZONE = "/sys/devices/virtual/thermal/thermal*"
 

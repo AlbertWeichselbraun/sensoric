@@ -2,7 +2,7 @@
 A sink that logs to an InfluxDB.
 """
 from influxdb import InfluxDBClient
-from sinks import Sink
+from sensoric.sinks import Sink
 
 
 class NotificationSink(Sink):

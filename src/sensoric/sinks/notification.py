@@ -1,7 +1,7 @@
 """
 A simple sink that logs to stdout used for debugging.
 """
-from sinks import Sink
+from sensoric.sinks import Sink
 
 
 class NotificationSink(Sink):

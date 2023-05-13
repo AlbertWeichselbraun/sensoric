@@ -6,7 +6,7 @@ Sensor used for determining virtual memory and swap memory usage.
 from urllib.request import urlopen
 from json import load
 
-from sensors import Sensor
+from sensoric.sensors import Sensor
 
 
 class PowerConsumption(Sensor):
